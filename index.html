@@ -1,3 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fyred Up Kitchens — FYRE Army</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fire: #FF4500;
+  --ember: #FF8C00;
+  --gold: #FFD700;
+  --smoke: #111111;
+  --ash: #1e1e1e;
+  --char: #2a2a2a;
+  --cream: #FFF8F0;
+  --text: #e8ddd0;
+  --muted: #777;
+  --army: #4a5c3a;
+  --army-light: #6b7f52;
+  --khaki: #c8b882;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--smoke);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  background: rgba(17,17,17,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,69,0,0.2);
+}
+
+.nav-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 5vw;
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  color: var(--fire);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.nav-logo span {
+  color: var(--khaki);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-top: -6px;
+  font-family: 'Space Mono', monospace;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--fire);
+  transition: all 0.3s;
+}
+
+/* ── FIELD MENU (category nav) ── */
+.field-menu {
+  border-top: 1px solid rgba(255,69,0,0.1);
+  padding: 0 5vw;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.field-menu::-webkit-scrollbar { display: none; }
+
+.field-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.field-btn:hover { color: var(--ember); }
+
+.field-btn.active {
+  color: var(--fire);
+  border-bottom-color: var(--fire);
+}
+
+.field-btn .btn-icon {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 97px 8vw 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,69,0,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(255,140,0,0.15) 0%, transparent 60%),
+    linear-gradient(135deg, #0a0a0a 0%, #1a1008 50%, #0f0a00 100%);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17,17,17,0.3) 0%,
+    rgba(17,17,17,0.0) 40%,
+    rgba(17,17,17,0.8) 70%,
+    rgba(17,17,17,1) 100%
+  );
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-rank {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--army-light);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.hero-rank::before {
+  content: '⬡⬡⬡';
+  color: var(--fire);
+  letter-spacing: 0.2em;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 15vw, 14rem);
+  line-height: 0.88;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+}
+
+.hero-title .fire-word { color: var(--fire); }
+.hero-title .army-word { color: var(--khaki); }
+
+.hero-tagline {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  color: var(--ember);
+  margin-top: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--fire);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── THIS WEEK SECTION ── */
+.this-week {
+  padding: 80px 8vw 60px;
+  border-bottom: 1px solid rgba(255,69,0,0.1);
+}
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--fire);
+  margin-bottom: 0.6rem;
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--fire);
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 2.5rem;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.week-featured {
+  grid-column: 1 / -1;
+  background: var(--ash);
+  border: 1px solid rgba(255,69,0,0.15);
+  padding: 2.5rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+
+.week-featured::after {
+  content: 'THIS WEEK';
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  background: var(--fire);
+  color: #fff;
+  padding: 0.3rem 0.7rem;
+  font-weight: 700;
+}
+
+.week-featured:hover { background: #252525; transform: translateY(-2px); }
+
+.week-featured .recipe-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  color: rgba(255,69,0,0.08);
+  position: absolute;
+  bottom: -1rem;
+  right: 1.5rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── MAIN CONTENT AREA ── */
+.main-content {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--ash);
+  border-right: 1px solid rgba(255,69,0,0.1);
+  padding: 2rem 0;
+  position: sticky;
+  top: 97px;
+  height: calc(100vh - 97px);
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 1rem;
+}
+
+.sidebar-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sidebar-nav { list-style: none; }
+
+.sidebar-nav li { border-bottom: 1px solid rgba(255,255,255,0.03); }
+
+.sidebar-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.sidebar-btn:hover { background: rgba(255,69,0,0.05); }
+
+.sidebar-btn.active {
+  background: rgba(255,69,0,0.08);
+  border-left: 3px solid var(--fire);
+}
+
+.sidebar-icon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-text { flex: 1; }
+
+.sidebar-name {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  display: block;
+}
+
+.sidebar-subtitle {
+  font-size: 0.6rem;
+  color: var(--muted);
+  font-style: italic;
+  font-family: 'Instrument Serif', serif;
+  margin-top: 1px;
+}
+
+.sidebar-btn.active .sidebar-name { color: var(--fire); }
+
+.sidebar-count {
+  font-size: 0.6rem;
+  color: var(--muted);
+  background: rgba(255,255,255,0.05);
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+}
+
+.sidebar-btn.active .sidebar-count {
+  background: rgba(255,69,0,0.15);
+  color: var(--fire);
+}
+
+/* ── RECIPE GRID ── */
+.recipe-area {
+  padding: 3rem 4vw;
+}
+
+.area-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.area-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.area-subtitle {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.area-count {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+}
+
+/* ── RECIPE CARD ── */
+.recipe-card {
+  background: var(--ash);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.recipe-card:hover {
+  background: var(--char);
+  border-color: rgba(255,69,0,0.2);
+  transform: translateY(-2px);
+}
+
+.recipe-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--fire), var(--gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.recipe-card:hover::before { transform: scaleX(1); }
+
+.card-category {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--army-light);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-new-badge {
+  background: var(--fire);
+  color: #fff;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.1rem 0.4rem;
+}
+
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.05;
+  color: var(--cream);
+  margin-bottom: 0.6rem;
+}
+
+.card-desc {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+
+.card-meta span { color: var(--fire); margin-right: 3px; }
+
+.card-arrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fire);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.recipe-card:hover .card-arrow { opacity: 1; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.94);
+  overflow-y: auto;
+  padding: 40px 5vw;
+}
+
+.modal-overlay.open { display: block; }
+
+.modal {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--ash);
+  border: 1px solid rgba(255,69,0,0.2);
+  position: relative;
+}
+
+.modal-header {
+  padding: 2.5rem clamp(1.5rem, 5vw, 3.5rem);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  font-family: 'Space Mono', monospace;
+}
+
+.modal-close:hover { border-color: var(--fire); color: var(--fire); }
+
+.modal-category {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--army-light);
+  margin-bottom: 0.6rem;
+}
+
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.modal-desc {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.modal-body {
+  padding: 2.5rem clamp(1.5rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 3rem;
+}
+
+@media (max-width: 640px) {
+  .modal-body { grid-template-columns: 1fr; gap: 2rem; }
+  .week-grid { grid-template-columns: 1fr; }
+  .main-content { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; display: none; }
+  .hero { min-height: auto; padding: 120px 6vw 60px; }
+  .hero-title { font-size: 4rem; }
+  .hero-stats { gap: 2rem; }
+  .hamburger { display: flex; }
+  .field-menu { display: none; }
+  .this-week { padding: 50px 6vw 40px; }
+  .recipe-area { padding: 2rem 4vw; }
+  .recipe-grid { grid-template-columns: 1fr; }
+  .week-featured { padding: 1.5rem; }
+  .about-section { padding: 60px 6vw; grid-template-columns: 1fr; gap: 2rem; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+
+.col-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,140,0,0.15);
+}
+
+.ingredient-list { list-style: none; }
+
+.ingredient-list li {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  gap: 0.6rem;
   color: var(--text);
 }
 
@@ -257,535 +891,4 @@ footer {
             <span class="sidebar-name">Sweet Relief</span>
             <span class="sidebar-subtitle">Desserts & snacks</span>
           </div>
-          <span class="sidebar-count" id="count-sweet">0</span>
-        </button>
-      </li>
-      <li>
-        <button class="sidebar-btn" onclick="showSection('canteen')" data-section="canteen">
-          <span class="sidebar-icon">🥤</span>
-          <div class="sidebar-text">
-            <span class="sidebar-name">Canteen</span>
-            <span class="sidebar-subtitle">Drinks & wellness</span>
-          </div>
-          <span class="sidebar-count" id="count-canteen">0</span>
-        </button>
-      </li>
-    </ul>
-  </aside>
-
-  <!-- RECIPE AREA -->
-  <div class="recipe-area">
-    <div class="area-header">
-      <div>
-        <div class="area-title" id="areaTitle">Field Kitchen</div>
-        <div class="area-subtitle" id="areaSubtitle">All recipes in the book</div>
-      </div>
-      <div class="area-count" id="areaCount"></div>
-    </div>
-    <div class="recipe-grid" id="recipeGrid"></div>
-  </div>
-</div>
-
-<!-- ABOUT -->
-<section class="about-section">
-  <div>
-    <div class="about-quote">Cook like <em>you mean it.</em><br>Eat like you earned it.</div>
-  </div>
-  <div class="about-text">
-    <p>FYRE Kitchens is Matron Jade's LIVE cooking content on TikTok. Videos posted daily, recipes updated weekly for the community.</p>
-    <p>The mission: hood fusion meets WWII-era resourcefulness meets east-west everything. One pan when possible. Cast iron always welcome. No corporate sponsors, no fussy plating.</p>
-    <p><span id="aboutCount">25</span> recipes and counting. Updated every week. Cooked live every time.</p>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">
-    FYRE
-    <span>Army · Fyred Up Kitchens</span>
-  </div>
-  <div>Updated weekly · Jade's kitchen · June 2026</div>
-</footer>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
-  <div class="modal" id="modalContent">
-    <div class="modal-header">
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <div class="modal-category" id="mCategory"></div>
-      <div class="modal-title" id="mTitle"></div>
-      <div class="modal-desc" id="mDesc"></div>
-    </div>
-    <div class="modal-body">
-      <div>
-        <div class="col-label">Ingredients</div>
-        <ul class="ingredient-list" id="mIngredients"></ul>
-      </div>
-      <div>
-        <div class="col-label">Steps</div>
-        <ol class="steps-list" id="mSteps"></ol>
-      </div>
-    </div>
-    <div class="notes-box" id="mNotes"></div>
-  </div>
-</div>
-
-<script>
-const SECTIONS = {
-  all:         { title: 'Field Kitchen',  subtitle: 'All recipes in the book' },
-  mess:        { title: 'Mess Hall',      subtitle: 'Mains & dinners' },
-  commissary:  { title: 'Commissary',     subtitle: 'Breads & staples' },
-  chow:        { title: 'Chow Line',      subtitle: 'Sides & salads' },
-  sweet:       { title: 'Sweet Relief',   subtitle: 'Desserts & snacks' },
-  canteen:     { title: 'Canteen',        subtitle: 'Drinks & wellness' },
-};
-
-const recipes = [
-  // ── MESS HALL ──
-  {
-    id: 1, section: 'mess', isNew: false,
-    date: 'May 22',
-    tag: 'Lunch · Cast Iron',
-    title: 'Cast Iron Skillet Gordita Quesadilla',
-    desc: 'Thick masa skillet bread stuffed with pulled chicken, pico, and peppers. Gordita meets skillet cornbread meets street food.',
-    time: '~25 min', serves: '4',
-    notes: 'No masa? Sub 1 cup cornmeal + 1 cup flour + extra butter. Do individual hand-pressed gorditas in the skillet for the best camera content.',
-    ingredients: ['2 cups masa harina','1½ cups warm water','1 tsp garlic powder','1 tsp onion powder','¼ tsp cayenne','1 tsp Himalayan pink salt','1 cup shredded cheese','1 cup pulled chicken','½ cup pico de gallo','4 mini peppers, sliced','1 tbsp butter'],
-    steps: ['Combine masa, salt, garlic powder, onion powder, and cayenne. Add warm water gradually and mix until soft Play-Doh dough. Rest 5 minutes.','Toss chicken with cayenne, garlic powder, and salt. Mix in pico and set aside.','Heat cast iron on medium. Add butter. Press half the masa flat into the skillet — about ½ inch thick.','Layer cheese across the base, then pile on chicken-pico mix and sliced peppers.','Press remaining masa flat and lay over the top like a lid. Press edges to seal like a giant stuffed pupusa.','Cover with foil. Cook medium-low 8 minutes, flip carefully, cook 6–8 more minutes until both sides are golden.','Slice into wedges like a pizza. Serve over basmati rice with extra pico on top.']
-  },
-  {
-    id: 4, section: 'mess', isNew: false,
-    date: 'May 22',
-    tag: 'Dinner · Noodles',
-    title: 'Crack Pepper Stepper Momofuku Spicy Bowl',
-    desc: 'Momofuku spicy noodles loaded with crispy pulled chicken, wilted kale, caramelized onion, blue cheese crumbled on top. No lemon. No apologies.',
-    time: '~20 min', serves: '2',
-    notes: 'Blue cheese + Momofuku spicy seasoning is the controversy. It works. The cracked pepper is the name — real cracked, heavy, on top so people can see it. Tomato is the freshness cut.',
-    ingredients: ['2 packs Momofuku spicy noodles','1 cup pulled chicken','1 cup kale, rough chop','½ onion, thinly sliced','2 garlic cloves, minced','2 oz blue cheese, crumbled','2 tsp cracked black pepper','1 tbsp olive oil','½ tsp Himalayan pink salt','½ tbsp butter','1 tomato, diced'],
-    steps: ['Get water boiling for noodles. Slice onion thin, mince garlic.','Heat olive oil in a pan on medium-high. Add onion + salt. Cook 6–8 minutes barely touching it — you want dark color. Add garlic last 2 minutes.','Push onions to the side. Drop chicken in — leave it alone 2–3 minutes to crust up. Add butter at the end.','Throw kale in. Toss everything. 90 seconds and done. Kill the heat.','Cook noodles per pack — 2 minutes. Save a splash of pasta water before draining.','Add noodles to pan with seasoning packet and pasta water splash. Toss hard. Hit with cracked pepper — <strong>don\'t be shy.</strong>','Plate. Pile blue cheese crumbles and fresh diced tomato on top. One more crack of pepper for the camera.']
-  },
-  {
-    id: 6, section: 'mess', isNew: false,
-    date: 'May 23',
-    tag: 'Lunch · Noodles',
-    title: 'College Ramen — Chili Drop Noodle Bowl',
-    desc: 'Momofuku spicy soy noodles cooked down in chili broth, chicken chili with beans on top, poached egg dropped right in.',
-    time: '~20 min', serves: '2',
-    notes: 'Do NOT drain the noodles. Let them cook down and drink the broth — thick and saucy not soupy. Bloom your spices first, that\'s what separates this from basic ramen.',
-    ingredients: ['2 Momofuku spicy soy noodle packs','1 cup Northgate chicken chili with beans','1 tsp La Fiesta New Mexico Molido Picante','¼ tsp Picante Molido New Mexico medium heat','¼ tsp paprika','½ onion, diced','3 garlic cloves, minced','3 mini sweet peppers, sliced','2 eggs','2 cups water or chicken broth','¼ tsp Himalayan pink salt'],
-    steps: ['Add oil to pan on medium. Bloom Picante Molido + paprika with onion and garlic 30 seconds until fragrant. Sauté until soft, 3 minutes. Add broth and bring to low boil.','Drop noodles into broth with Momofuku seasoning packet and La Fiesta chile. Don\'t drain — let noodles absorb. Stir occasionally, 3–4 minutes.','Spoon chicken chili with beans on top. Don\'t fully stir in — let it sit and infuse. Add sliced peppers.','Make a well in the middle. Crack egg in. Cover with lid — 2 min for runny, 3–4 for set. That yolk breaking is the whole moment.','Serve straight from the pan. Hit with more La Fiesta on top.']
-  },
-  {
-    id: 12, section: 'mess', isNew: false,
-    date: 'May 30',
-    tag: 'Dinner · Cajun · Cast Iron',
-    title: 'Broke American WWII Butter Chicken — Saffron Cream Edition',
-    desc: 'Spice Tailor kit upgraded with whole cumin bloom, half and half, and saffron finish. Drumsticks braised low and slow until fall-off-the-bone.',
-    time: '~55 min', serves: '4',
-    notes: 'Kit has three components — spice packet, small base sauce, big main sauce. Use in that exact order. Drumsticks need longer than the kit suggests. Uncover last 5 minutes to thicken. Saffron goes in last off heat.',
-    ingredients: ['1 Spice Tailor spice packet','1 Spice Tailor base sauce — small pouch','1 Spice Tailor main sauce — big pouch','6 chicken drumsticks','1 red onion, finely diced','4 garlic cloves, minced','1 orange or yellow bell pepper, diced','3 tbsp butter','⅓ cup half and half','1 tsp whole cumin','1 pinch saffron','½ tsp Himalayan pink salt','2 cups basmati rice'],
-    steps: ['Score drumsticks 2–3 times with a knife. Season all over with salt.','Heat 1 tbsp butter on medium. Add whole cumin — sizzle 20–30 seconds until it pops. Add spice packet and cook 20 more seconds.','Add drumsticks and brown on all sides 3–4 minutes per side. Add onion, garlic, and pepper. Cook until softened, 4 minutes.','Pour in base sauce — small pouch. Stir and simmer 1–2 minutes.','Stir in main sauce — big pouch. Add half and half and remaining butter. Bring to low simmer, cover, cook 30–35 minutes. Uncover last 5 minutes to thicken.','Kill the heat. Crush saffron between fingers and drop into sauce. Stir and bloom 2 minutes — watch it turn golden.','Serve drumsticks over basmati. Spoon saffron sauce generously on top.']
-  },
-  {
-    id: 13, section: 'mess', isNew: false,
-    date: 'June 4',
-    tag: 'Dinner · Cajun',
-    title: "Poche's Cajun Stuffed Chicken — Shrimp Edition",
-    desc: "Certified Cajun stuffed chicken from Breaux Bridge, LA. Shrimp stuffing inside, salt and red pepper rubbed outside. Start this first — everything else cooks while it bakes.",
-    time: '~90 min', serves: '4',
-    notes: "Remove the netting before serving. Internal temp needs to hit 180°F. At 3lbs that's 60-90 minutes at 325°F. Don't rush it. The broth and onion in the pan becomes your pan sauce.",
-    ingredients: ["1 Poche's stuffed chicken (3lb)",'1 cup water','1 cup chicken broth','½ onion, sliced','1 tbsp garlic cloves, smashed','1 tsp garlic powder','1 tsp Himalayan pink salt'],
-    steps: ['Preheat oven to 325°F. Remove chicken from packaging — keep the netting on, it holds the stuffing.','Place chicken in baking pan. Pour water and broth — about 1 inch deep. Add sliced onion and smashed garlic around the chicken.','Season outside with garlic powder and salt. Cover tightly with foil. Into the oven. Set timer for 60 minutes.','At 60 minutes remove foil. Baste with pan juices. Return uncovered 20–30 more minutes until golden and internal temp hits 180°F.','Remove netting before serving. Slice 5 pieces for the broadcast. Spoon pan sauce over the top. Refrigerate the rest.']
-  },
-  {
-    id: 19, section: 'mess', isNew: false,
-    date: 'June 8',
-    tag: 'Dinner · Pizza',
-    title: 'Naan Skillet Pizza — BBQ Turkey Pepperoni',
-    desc: 'Homemade naan as the crust, BBQ sauce base, turkey pepperoni, mini peppers, melted cheese. Personal size, fast, great on camera.',
-    time: '~10 min', serves: '4 personal pizzas',
-    notes: "BBQ sauce as the base pairs perfectly with turkey pepperoni. Don't oversauce or the naan gets soggy. Thin layer BBQ, heavy on cheese. High heat fast.",
-    ingredients: ['4 naan flatbreads (freshly made)','½ cup BBQ sauce','1 cup shredded cheese','Turkey pepperoni, sliced','4 mini peppers, sliced into rings','½ tsp garlic powder','1 pinch Himalayan pink salt'],
-    steps: ['Preheat pizza oven or set oven broiler to high. Broiler: place rack at top.','Lay naan flat. Spread a thin layer of BBQ sauce — leave a little border. Sprinkle garlic powder over the sauce.','Layer cheese first, then turkey pepperoni, then pepper rings. Pinch of salt over everything.','Pizza oven: 4–6 minutes until bubbling and edges crispy. Broiler: 3–5 minutes watching closely.','Rest 1 minute before slicing. That cheese pull is your close-up. 🍕']
-  },
-  // ── COMMISSARY ──
-  {
-    id: 3, section: 'commissary', isNew: false,
-    date: 'May 22',
-    tag: 'Bread · Air Fryer',
-    title: 'Air Fryer Mexican Chicken Cornbread',
-    desc: 'One bowl, one dish, zero oven — loaded with pico, chicken, and cheese in the Ninja.',
-    time: '~35 min', serves: '4–6',
-    notes: '320°F is the move — lower and slower so the inside cooks through before the top burns. Glass dishes take longer than metal. Leftovers are incredible the next day.',
-    ingredients: ['1 cup all-purpose flour','1 cup masa harina','1 tsp baking powder','½ tsp salt','1 tsp garlic granulated','½ tsp onion powder','2 eggs','⅘ cup milk or water','3 tbsp olive oil','⅘ cup pico de gallo, well drained','1 cup roasted chicken, shredded','1 cup shredded cheese','3 mini peppers, diced'],
-    steps: ['<strong>Drain the pico:</strong> Press into a paper towel. Don\'t skip this.','<strong>Mix dry:</strong> Whisk flour, masa harina, baking powder, salt, garlic, onion powder.','<strong>Mix wet:</strong> Beat eggs, mix in milk and olive oil.','<strong>Combine:</strong> Pour wet into dry, stir until just combined. Fold in pico, chicken, peppers, and half the cheese.','<strong>Prep & preheat:</strong> Grease glass pie dish with olive oil. Preheat Ninja to 320°F for 3 minutes.','<strong>Pour & top:</strong> Pour batter in, spread evenly. Sprinkle remaining cheese on top.','<strong>Air fry:</strong> 320°F for 22–25 minutes. Toothpick in center should come out clean. Foil if top browns too fast.','<strong>Rest & serve:</strong> Rest 5 minutes before slicing. Serve with rice.']
-  },
-  {
-    id: 18, section: 'commissary', isNew: false,
-    date: 'June 8',
-    tag: 'Bread · Cast Iron',
-    title: 'North African Style Naan — Cast Iron Skillet',
-    desc: 'Yogurt dough flatbread cooked in a dry cast iron skillet until charred and bubbly. Soft, chewy, done in under an hour.',
-    time: '~55 min', serves: '4 flatbreads',
-    notes: 'Active dry yeast MUST be bloomed first. Warm water = 100-110°F, like warm bath water. Too hot kills the yeast. The peach yogurt adds slight sweetness. Don\'t skip the rest time.',
-    ingredients: ['2 cups Gold Medal all purpose flour','1 active dry yeast packet','½ cup warm water (not hot)','¼ cup peach yogurt','2 tbsp unsalted butter, melted','1 tsp granulated sugar','½ tsp Himalayan pink salt'],
-    steps: ['Combine warm water, sugar, and yeast. Stir and wait 5–10 minutes until foamy. No foam = dead yeast, start over.','Add yogurt and melted butter. Stir to combine.','Add flour and salt. Mix until shaggy dough forms then knead 5–8 minutes until smooth and tacky.','Cover and rest in a warm spot 30–45 minutes until roughly doubled.','Divide into 4 balls. Roll each flat — ¼ inch thick, oval or round.','Heat cast iron on HIGH — no oil. When smoking hot lay naan flat. Cook 1–2 minutes until bubbles form and dark spots appear. Flip, cook 1 more minute.','Brush with melted butter right off the skillet. Stack and cover with towel.']
-  },
-  {
-    id: 20, section: 'commissary', isNew: false,
-    date: 'June 8',
-    tag: 'Bread · Cast Iron · Daily',
-    title: 'Same Day Morning Cast Iron Bread',
-    desc: 'Mix before your shower, rest while you get ready, bake while you get dressed. No kneading, no fuss, crusty outside soft inside.',
-    time: '~2.5 hrs (mostly resting)', serves: '1 loaf',
-    notes: "No kneading required — the long rest does all the work. Dough looks shaggy and sticky when you mix it, that's correct. Don't add more flour. The hot cast iron gives you that bakery crust — it must preheat in the oven first.",
-    ingredients: ['3 cups Gold Medal all purpose flour','1 active dry yeast packet','1½ cups warm water','1 tsp Himalayan pink salt','1 tsp granulated sugar','1 tbsp unsalted butter, melted (for the skillet)'],
-    steps: ['<strong>Before shower:</strong> Bloom yeast in warm water with sugar. Stir and wait 5–10 minutes until foamy.','Add flour and salt. Stir until a shaggy sticky dough forms. Don\'t knead. Cover the bowl. <strong>Go shower.</strong>','Leave dough alone 1.5–2 hours in a warm spot until bubbly and roughly doubled. <strong>Go get ready.</strong>','Put cast iron in the oven and preheat to 450°F with the skillet inside. Let it heat 15 minutes.','Carefully pull the hot skillet out. Add butter and swirl. Scrape dough in — don\'t punch it down. It\'ll look rough. That\'s right.','Cover with foil tightly. Bake at 450°F for 30 minutes. Remove foil and bake another 12–15 minutes until deep golden brown.','Cool in the skillet 10 minutes before slicing. That crust crackle is the whole moment.']
-  },
-  // ── CHOW LINE ──
-  {
-    id: 14, section: 'chow', isNew: false,
-    date: 'June 4',
-    tag: 'Side · Soul Food',
-    title: 'Southern Collard Greens — Broth Braised',
-    desc: 'Braised low and slow in seasoned broth with onion and garlic. No smoked meat but the broth does the work. Lime at the end is the finisher.',
-    time: '~60 min', serves: '4',
-    notes: 'No smoked meat means you lean harder on butter and broth for richness. The lime brightens everything and cuts the bitterness. Low and slow minimum 45 minutes — don\'t rush it.',
-    ingredients: ['1 bunch collard greens, stems removed, rough chop','2 cups chicken broth','½ onion, diced','3 garlic cloves, minced','2 tbsp butter','1 tsp garlic powder','½ tsp Himalayan pink salt','½ tsp black pepper','1 tbsp lime juice'],
-    steps: ['Wash collard greens well. Remove tough stems by folding and pulling. Rough chop — they cook way down.','Melt butter in a large pot on medium. Add onion and cook 4–5 minutes. Add garlic, cook 1 more minute.','Add greens in batches — stir and let each batch wilt before adding more.','Pour in broth. Season with garlic powder, salt, and pepper. Bring to a low boil then simmer. Cover and cook 45–60 minutes.','Taste and adjust salt. Squeeze lime over the top right before serving. That\'s the finisher.']
-  },
-  {
-    id: 15, section: 'chow', isNew: false,
-    date: 'June 4',
-    tag: 'Side · Soul Food',
-    title: 'Candied Sweet Potatoes',
-    desc: 'Sweet potatoes cooked down in butter and brown sugar until glossy and caramelized. Simple, classic. The sweet to balance the savory plate.',
-    time: '~25 min', serves: '4',
-    notes: 'Slice them even so they cook at the same rate. Medium-low heat and patience is what makes them glossy not burnt. If the pan gets dry add a splash more water.',
-    ingredients: ['2 sweet potatoes, peeled and sliced into rounds','3 tbsp butter','3 tbsp brown sugar','½ tsp cinnamon','¼ tsp Himalayan pink salt','¼ cup water'],
-    steps: ['Peel and slice sweet potatoes into ½ inch rounds. Even thickness is important.','Melt butter in a pan on medium. Add sweet potato rounds in a single layer. Cook 3–4 minutes per side until they start to color.','Add brown sugar, cinnamon, salt, and water. Stir gently to coat every piece. Reduce to medium-low.','Cover and cook 10–12 minutes until fork tender and the sauce has thickened into a glaze. Spoon glaze over the top.']
-  },
-  {
-    id: 16, section: 'chow', isNew: false,
-    date: 'June 4',
-    tag: 'Side · Quick',
-    title: 'Skillet Garlic Bread',
-    desc: 'Butter, real garlic, toasted in a skillet. No oven needed since it\'s already running. Done in 5 minutes right before you plate.',
-    time: '~5 min', serves: '4',
-    notes: 'Real garlic in the butter is what makes it taste like garlic bread not just toast. Watch it — bread goes from golden to burnt fast.',
-    ingredients: ['4 bread slices','2 tbsp butter','2 garlic cloves, minced','½ tsp garlic powder','1 pinch Himalayan pink salt'],
-    steps: ['Melt butter in a skillet on medium. Add minced garlic and stir 30 seconds until fragrant. Don\'t let it burn.','Add garlic powder and salt. Lay bread slices face down in the garlic butter.','Cook 2–3 minutes until golden and crispy. Flip once. Serve immediately.']
-  },
-  // ── SWEET RELIEF ──
-  {
-    id: 2, section: 'sweet', isNew: false,
-    date: 'May 22',
-    tag: 'Dessert · WWII Remix',
-    title: 'Date & Berry Walnut Crumble Bars',
-    desc: 'Chewy bars with a walnut-date base, jammy berry center, and buttery crumble top. WWII ration bars meets soul food sweetness.',
-    time: '~40 min', serves: '12 bars',
-    notes: 'The Torani vanilla syrup is the secret weapon. Drizzle the International Delight Caramel Macchiato creamer on top when serving. IYKYK.',
-    ingredients: ['1½ cups all-purpose flour','1 cup rolled oats (or sub more flour)','½ cup powdered or cane sugar','½ cup unsalted butter, melted','½ cup walnuts, roughly chopped','8 medjool dates, pitted and chopped','1½ cups frozen berries','2 tbsp cornstarch','2 tbsp Torani vanilla syrup','¼ tsp Himalayan pink salt','1 tsp baking powder'],
-    steps: ['Preheat oven to 375°F. Butter an 8x8 pan or cast iron.','In a saucepan combine frozen berries, cornstarch, and Torani syrup. Heat 2–3 minutes until jammy. Smash dates in. Set aside.','Mix flour, oats, sugar, salt, and baking powder. Pour in melted butter and mix until crumbly. Fold in walnuts.','Press ⅔ of the crumble into the pan firmly. Pour date-berry jam over. Crumble remaining ⅓ on top — don\'t press, just scatter.','Bake 18–22 minutes until top is golden and edges bubble.','Cool 10 minutes before cutting. Drizzle caramel macchiato creamer for the close-up.']
-  },
-  {
-    id: 5, section: 'sweet', isNew: false,
-    date: 'May 22',
-    tag: 'Dessert · Cast Iron · Cake Mix Hack',
-    title: 'BARBS Lemon Walnut Strawberry Rhubarb Skillet Cake',
-    desc: 'Lemon cake mix base, walnuts, strawberry rhubarb jam swirl baked in cast iron. Crispy edges, gooey center. BARBS not carbs.',
-    time: '~30 min', serves: '8 slices',
-    notes: 'The cake mix does the heavy lifting. Olive oil keeps it chewy not cakey. The jam swirl will bubble and caramelize at the edges — that\'s the best bite. Serve warm.',
-    ingredients: ['1 cup Duncan Hines Lemon Supreme cake mix','¼ cup all-purpose flour (or cornstarch for extra chew)','2 large eggs','⅓ cup olive oil','½ cup walnuts, roughly chopped','3 tbsp strawberry rhubarb jam','½ tsp Himalayan pink salt','1 tbsp butter (for the skillet)'],
-    steps: ['Preheat oven to 350°F. Put cast iron in while it heats — hot skillet = crispy edges.','Combine cake mix and flour. Add eggs and olive oil and stir until thick dough forms. Fold in walnuts and pinch of salt.','Pull hot skillet out. Add butter and swirl — it\'ll sizzle and coat instantly.','Press dough into skillet. Drop spoonfuls of jam across the top and swirl with a knife — <strong>don\'t fully mix in</strong>, you want pockets.','Bake at 350°F for 18–22 minutes. Edges golden and set, center slightly underdone — it firms as it cools.','Cool in the skillet 10 minutes. Slice into wedges. Dust with a pinch of salt for the close-up.']
-  },
-  {
-    id: 7, section: 'sweet', isNew: false,
-    date: 'May 23',
-    tag: 'Dessert · One Bowl',
-    title: 'Brown Butter Walnut Blondies',
-    desc: 'One bowl, one pan. Brown butter gives these a nutty caramel depth that makes people think you did something complicated. You didn\'t.',
-    time: '~30 min', serves: '9 squares',
-    notes: 'Brown butter is the only technique here that matters — don\'t rush it. The difference is enormous. No brown sugar? Sub white sugar + 1 tbsp molasses.',
-    ingredients: ['½ cup unsalted butter','1 cup brown sugar, packed','1 large egg','1 tsp vanilla extract or Torani vanilla syrup','1 cup all-purpose flour','½ cup walnuts, roughly chopped','½ tsp baking powder','¼ tsp Himalayan pink salt'],
-    steps: ['Melt butter in a saucepan on medium. Keep stirring — it\'ll foam, then go golden, then smell nutty. Pull off heat when you see brown bits at the bottom. Pour into mixing bowl immediately.','Whisk brown sugar into hot brown butter. Cool 2 minutes then add egg and vanilla. Whisk until smooth and glossy.','Fold in flour, baking powder, and salt. Stir until just combined. Batter will be thick.','Pour into greased 8x8 pan or cast iron. Scatter walnuts on top and press lightly.','Bake at 350°F for 20–22 minutes. Edges set, center looks slightly underdone — it firms as it cools.','Cool 15 minutes before cutting. Pinch of salt on top right out of the oven. That\'s the shot.']
-  },
-  {
-    id: 8, section: 'sweet', isNew: false,
-    date: 'May 25',
-    tag: 'Dessert · Cookies',
-    title: 'Lemon Cream Walnut Cookies',
-    desc: 'Half a box of lemon cake mix, butter-heavy dough, thick and pillowy. Walnuts folded in. The kind of cookie that looks like a bakery made it but took 20 minutes.',
-    time: '~20 min', serves: '12 cookies',
-    notes: 'Softened butter = thick cakey cookie. Melted butter = flat crispy. The cornstarch keeps them extra soft. Don\'t skip it.',
-    ingredients: ['½ box Duncan Hines Lemon Supreme cake mix','½ cup unsalted butter, softened','1 large egg','1 tbsp cornstarch','¼ cup crushed walnuts','1 tbsp lemon juice','¼ tsp Himalayan pink salt'],
-    steps: ['Preheat oven to 350°F. Line a baking sheet.','Beat softened butter until fluffy, 1 minute. Add egg and lemon juice and mix until smooth.','Add cake mix and cornstarch. Stir until thick dough forms. Fold in walnuts and salt.','Scoop tablespoon-sized balls. Press down slightly with your palm.','Bake 11–13 minutes. Edges set, centers underdone — they firm as they cool.','Cool 5 minutes before moving. Tiny pinch of salt on top for the camera.']
-  },
-  {
-    id: 9, section: 'sweet', isNew: false,
-    date: 'May 25',
-    tag: 'Dessert · Cookies',
-    title: 'Lemon Orange Glazed Cookies',
-    desc: 'Half a box of lemon cake mix lifted with orange extract and lemon juice. Crispy edges, chewy centers. Two citrus flavors, one cookie.',
-    time: '~18 min', serves: '12 cookies',
-    notes: 'Melted butter gives you the crispy edge on purpose. Orange extract is strong — 1 tsp is plenty. These spread more, space them out. Pull at 10 minutes even if they look underdone.',
-    ingredients: ['½ box Duncan Hines Lemon Supreme cake mix','⅓ cup unsalted butter, melted','1 large egg','1 tsp orange extract','1 tbsp lemon juice','¼ cup crushed walnuts','¼ tsp Himalayan pink salt'],
-    steps: ['Preheat oven to 375°F — hotter for that crispy edge. Line baking sheet.','Whisk melted butter, egg, orange extract, and lemon juice until smooth.','Stir in cake mix until looser dough forms. Fold in walnuts and salt. Stickier than the cream cookies — correct.','Scoop tablespoon-sized balls 2 inches apart. Don\'t press — let the heat do it.','Bake 9–11 minutes. Pull when edges just turn golden. Center firms as it cools.','Cool on pan fully before moving — at least 8 minutes. That edge crunch is the whole point.']
-  },
-  {
-    id: 17, section: 'sweet', isNew: false,
-    date: 'June 4',
-    tag: 'Dessert · Drink',
-    title: 'Mango Banana Lime Smoothie',
-    desc: 'Ripe mango and banana blended with lime juice and shelf milk. Tropical, no bake. Use the mangos today — they\'re ready right now.',
-    time: '~5 min', serves: '4',
-    notes: 'Ripe soft mangos are perfect for this. Banana adds creaminess. Lime keeps it bright and stops the banana going grey. Saran wrap on the blender, hold the plate down firm, start on low.',
-    ingredients: ['2 ripe mangos, peeled and diced','1 banana','1 lime, juiced','½ cup shelf milk','1 tsp brown sugar or honey (optional)','1 cup ice'],
-    steps: ['Peel and dice mangos. Slice banana. Juice lime. Everything goes in the blender.','Add milk and ice. Taste the mango — if sweet enough skip the sugar. Blend on low first then increase. Hold that plate down.','Pour into glasses. Squeeze remaining lime over the top. Serve cold. 🥭']
-  },
-  {
-    id: 21, section: 'sweet', isNew: false,
-    date: 'June 8',
-    tag: 'Dessert · Cast Iron',
-    title: 'Sticky Chilli Cast Iron Pineapple',
-    desc: 'Fresh pineapple caramelized in butter and brown sugar with jalapeño heat and lime finish. 15 minutes. Sweet, spicy, glossy.',
-    time: '~15 min', serves: '4',
-    notes: "Don't move the pineapple too much — let it sit and caramelize. That golden crust is the flavor. Jalapeño gets soft and sweet in the butter. Lime goes in last off heat or it turns bitter.",
-    ingredients: ['½ fresh pineapple, cut into chunks','2 tbsp butter','2 tbsp brown sugar','1 jalapeño, thinly sliced','½ lime, juiced','1 pinch Himalayan pink salt','¼ tsp cayenne (optional)'],
-    steps: ['Heat cast iron on medium-high until hot. Add butter and let it foam and settle.','Add pineapple chunks in a single layer. Don\'t stir — sit 2–3 minutes until golden and caramelized. Flip once.','Add brown sugar, jalapeño slices, salt, and cayenne. Stir gently and let sugar melt into a glaze, 2 minutes.','Kill the heat. Squeeze lime over everything. Toss gently. Serve straight from the skillet. 🍍']
-  },
-  {
-    id: 22, section: 'sweet', isNew: false,
-    date: 'June 8',
-    tag: 'Sauce · Dessert',
-    title: 'Sweet Chilli Pineapple Sauce',
-    desc: 'Fresh pineapple and jalapeño cooked down into a sweet spicy glossy sauce. Goes on everything. Real product potential.',
-    time: '~25 min', serves: '1 jar',
-    notes: 'The sauce thickens as it cools so pull it off heat when slightly looser than you want. Store in a clean jar in the fridge up to 2 weeks. Goes on naan, chicken, rice, everything.',
-    ingredients: ['1 cup fresh pineapple, finely diced','2 jalapeños, finely diced','3 tbsp granulated sugar','2 garlic cloves, minced','2 tbsp lime juice','¼ cup water','½ tsp Himalayan pink salt'],
-    steps: ['Combine pineapple, jalapeños, garlic, and water in a small saucepan. Bring to a medium boil.','Add sugar, lime juice, and salt. Reduce to medium-low and simmer 15–20 minutes until thick and glossy.','Taste and adjust — more sugar for sweet, more jalapeño for heat, more lime for brightness. Pull off heat when slightly looser than you want.','Pour into a clean jar. Let cool. Use on everything. 🍍']
-  },
-  {
-    id: 23, section: 'sweet', isNew: false,
-    date: 'June 8',
-    tag: 'Snack · Ninja Dehydrator',
-    title: 'Ninja Dehydrated Spicy Pineapple Candy',
-    desc: 'Pineapple sliced thin, coated in spicy sugar, dehydrated in the Ninja until chewy and candied. Zero effort, maximum reward.',
-    time: '~6–8 hrs (hands off)', serves: '4',
-    notes: 'Thin even slices are critical. Lime juice helps the sugar coating stick. Check at 6 hours — chewy not brittle. Store in an airtight jar once fully cooled. These are sellable. Just saying.',
-    ingredients: ['½ fresh pineapple, sliced thin (¼ inch)','3 tbsp granulated sugar','½ tsp cayenne','¼ tsp Himalayan pink salt','1 tbsp lime juice'],
-    steps: ['Slice pineapple into ¼ inch rounds. Pat dry with paper towel — less moisture = faster dehydrating.','Mix sugar, cayenne, and salt. Toss pineapple in lime juice first, then toss in spicy sugar until evenly coated.','Lay slices flat on Ninja dehydrator racks. Don\'t overlap.','Set Ninja to 135°F for 6–8 hours. Check at 6 hours — chewy, tacky, slightly sticky. Not wet, not hard.','Cool completely before storing. They firm up as they cool. Airtight jar or bag. 🍍']
-  },
-  {
-    id: 24, section: 'sweet', isNew: false,
-    date: 'June 20',
-    tag: 'Dessert · Muffins · Air Fryer',
-    title: 'Raspberry Champagne Crème Muffins',
-    desc: 'Soft, tender muffins built around Paris Hilton Raspberry Champagne creamer for a genuinely unique flavor nobody else can replicate. Crème glaze finishes the moment. Made in the air fryer.',
-    time: '~20 min', serves: '10 muffins',
-    notes: "The creamer is doing double duty — it's both your liquid AND your flavor, don't sub it out or you lose the whole point. Air fryers run hotter than ovens so we drop the temp and watch closely — every air fryer runs different. Don't overmix the batter — lumps are fine.",
-    ingredients: ['2 cups all-purpose flour','¾ cup granulated sugar','2 large eggs','¾ cup Paris Hilton Raspberry Champagne creamer','⅓ cup olive oil','½ cup unsalted butter, melted','2 tsp baking powder','¼ tsp Himalayan pink salt','1 tsp lemon juice','½ cup powdered sugar (for glaze)','1 tbsp Paris Hilton creamer (for glaze)'],
-    steps: ['Preheat air fryer to 325°F for 3 minutes. Line a muffin tin or use silicone air fryer muffin cups.','Whisk flour, sugar, baking powder, and salt together in a large bowl.','In a separate bowl whisk eggs, creamer, olive oil, melted butter, and lemon juice until smooth.','Pour wet into dry. Stir until just combined — lumps are fine, don\'t overmix or the muffins get tough.','Fill muffin cups about ¾ full. Don\'t overcrowd the basket — leave space around each one for air to circulate. Cook in batches if needed.','Air fry at 325°F for 10–12 minutes. Check at 10 minutes — a toothpick should come out clean. Every air fryer runs different so watch closely.','Cool muffins in the cups 5 minutes then transfer to a rack. Whisk powdered sugar with creamer until smooth and drizzle over the warm muffins.']
-  },
-  {
-    id: 25, section: 'sweet', isNew: false,
-    date: 'June 20',
-    tag: 'Dessert · Bars · Oven or Air Fryer',
-    title: 'Lemon Bars — Oven or Air Fryer',
-    desc: 'Bright lemon bars with a buttery shortbread base and tangy lemon curd top. Works in the oven or air fryer — temps included for both. Sweet, tart, simple.',
-    time: '~35 min + chill', serves: '9 bars',
-    notes: "Oven: 350°F. Air fryer: 310°F — air fryers run hotter so we drop it 40 degrees. Check the air fryer version 5 minutes earlier than the oven time. Let the bars cool completely before cutting or the filling won't set right.",
-    ingredients: ['1½ cups all-purpose flour','½ cup unsalted butter, softened','¾ cup granulated sugar','¼ cup powdered sugar (for crust)','2 large eggs','⅓ cup lemon juice','1 tsp lemon extract','2 tbsp all-purpose flour (for filling)','¼ tsp Himalayan pink salt','1 tbsp powdered sugar (for dusting)'],
-    steps: ['<strong>Oven: preheat to 350°F. Air fryer: preheat to 310°F for 3 minutes.</strong> Line an 8x8 pan with parchment, leaving overhang on the sides.','Mix flour, softened butter, and powdered sugar until it forms a soft dough. Press evenly into the bottom of the pan.','<strong>Oven: bake crust 15 minutes</strong> until light golden. <strong>Air fryer: cook crust 10 minutes</strong> until light golden.','While crust bakes, whisk eggs, sugar, lemon juice, lemon extract, flour, and salt together until smooth.','Pour filling over the hot crust. <strong>Oven: bake 18–20 minutes</strong> until the center is just set. <strong>Air fryer: cook 13–15 minutes</strong>, checking at 13.','Cool completely at room temp, then refrigerate at least 1 hour before cutting — this is what makes clean slices. Lift out using the parchment overhang.','Dust with powdered sugar right before serving. Cut into squares with a sharp knife, wiping between cuts for clean edges.']
-  },
-  {
-    id: 26, section: 'sweet', isNew: true,
-    date: 'June 20',
-    tag: 'Dessert · Cookies · Muffin Tin',
-    title: 'Thicc Muffin Tin Cookies — Stuffed Tall',
-    desc: "Thick bakery-style cookies baked inside a muffin tin so they stay tall instead of spreading flat. Crispy edge, molten gooey center. The cookie everyone's obsessed with right now.",
-    time: '~40 min + chill', serves: '6 cookies',
-    notes: "The muffin tin walls are what force the cookie to grow up instead of spreading out — that's the whole trick. Don't skip chilling the dough 15-20 minutes or they'll still spread some. Pull them when the edges look set but the center still looks slightly underdone — they keep cooking in the hot tin after you take them out.",
-    ingredients: ['½ cup unsalted butter, melted and cooled','½ cup brown sugar, packed','¼ cup granulated sugar','1 large egg','1 tsp vanilla extract','1¾ cups all-purpose flour','½ tsp baking powder','¼ tsp Himalayan pink salt','1 cup chocolate chips or chunks'],
-    steps: ['Whisk melted butter, brown sugar, and granulated sugar together until smooth. Add egg and vanilla, whisk until glossy.','Add flour, baking powder, and salt. Stir until just combined. Fold in chocolate chips.','Cover the dough and chill in the fridge 15–20 minutes — this keeps them thick instead of spreading flat.','Preheat oven to 350°F. Grease a muffin tin well, including the top edges. Scoop dough into 6 muffin cups, filling about ¾ full and pressing it up the sides slightly.','Bake at 350°F for 16–19 minutes. Edges should look set and golden, centers should look slightly underdone and soft — that\'s correct, they finish cooking as they cool.','Let cool in the tin 10 minutes before running a knife around the edges and popping them out. That gooey center cracking open is the whole shot.']
-  },
-  {
-    id: 27, section: 'sweet', isNew: false,
-    date: 'June 20',
-    tag: 'Dessert · Muffins',
-    title: 'Almond Orange Crackle Top Muffins',
-    desc: 'Soft almond muffins lifted with orange extract, finished with a sweet crackly sugar top. Almond and orange is a classic combo — nutty, bright, not overly sweet.',
-    time: '~25 min', serves: '10 muffins',
-    notes: "Almond and orange together is the move — neither overpowers, they lift each other. Don't double up on either extract or one will drown the other. The coarse sugar on top before baking gives that crackly crust people love biting into.",
-    ingredients: ['2 cups all-purpose flour','¾ cup granulated sugar','2 large eggs','¾ cup milk','⅓ cup olive oil','¼ cup unsalted butter, melted','2 tsp baking powder','¼ tsp Himalayan pink salt','1 tsp almond extract','¾ tsp orange extract','2 tbsp coarse sugar (for topping)'],
-    steps: ['Preheat oven to 375°F. Line a muffin tin with liners or grease well.','Whisk flour, sugar, baking powder, and salt together in a large bowl.','In a separate bowl whisk eggs, milk, olive oil, melted butter, almond extract, and orange extract until smooth.','Pour wet into dry. Stir until just combined — lumps are fine, don\'t overmix.','Fill muffin liners about ¾ full. Sprinkle coarse sugar over the tops before baking.','Bake at 375°F for 16–19 minutes until a toothpick comes out clean and tops are golden with a crackly sugar crust.','Cool in the tin 5 minutes then transfer to a rack. Serve warm — that sugar crackle when you bite in is the whole point.']
-  },
-  // ── CANTEEN ──
-  {
-    id: 10, section: 'canteen', isNew: false,
-    date: 'May 25',
-    tag: 'Drinks · Wellness',
-    title: 'Shilajit Honey Chai — Energy Wellness Drink',
-    desc: 'A warming chai built around the BetterAlt Shilajit honey stick. Cinnamon and honey balance the earthy depth. Sip it slow.',
-    time: '~10 min', serves: '1 mug',
-    notes: '⚠️ Supplement drink — one honey stick per serving, don\'t double up. Never add Shilajit to boiling liquid — dissolve in warm liquid first. Not for everyone — consult your doctor if you have health conditions.',
-    ingredients: ['1 BetterAlt Himalayan Shilajit Honey Stick','1 black tea bag','1 tsp cinnamon','1 tsp sugar','1 cup warm water (not boiling)','¼ cup milk or creamer','1 pinch Himalayan pink salt'],
-    steps: ['Heat water until warm but NOT boiling. Steep black tea bag 3–4 minutes. Remove bag.','Let tea cool slightly. Squeeze Shilajit honey stick into 2 tbsp of warm tea and stir until fully dissolved. Don\'t skip this step.','Stir dissolved Shilajit back into the full cup. Add cinnamon, sugar, and salt. Stir well.','Warm milk or creamer separately and pour in. Adjust cinnamon or sugar to taste.','Serve hot. Dust a pinch of cinnamon on top for the camera.']
-  },
-  {
-    id: 11, section: 'canteen', isNew: false,
-    date: 'May 25',
-    tag: 'Drinks · Energy',
-    title: 'Strawberry Açaí Power Lemonade',
-    desc: 'Wyler\'s lemonade base boosted with real lemon juice and Cutting Mix strawberry açaí. That pink color is the close-up.',
-    time: '~3 min', serves: '1 glass',
-    notes: '⚠️ The Cutting Mix has Berberine and Yerba Mate — real energy, not just sugar. One stick per serving max. Fresh lemon juice makes it taste real not powdery.',
-    ingredients: ["1 Wyler's Light lemonade packet",'1 LeeFar Cutting Mix strawberry açaí stick','1 tbsp lemon juice','1½ cups cold water','1 cup ice','½ tsp sugar (optional)'],
-    steps: ['Add ice to your cup or blender. Pour in cold water.','Add Wyler\'s packet, Cutting Mix stick, and lemon juice. Stir or blend until fully dissolved. Taste — add sugar if wanted.','Pour over fresh ice. That pink color is your close-up. 🍓']
-  },
-];
-
-let currentSection = 'all';
-
-function getCounts() {
-  const counts = { all: recipes.length };
-  ['mess','commissary','chow','sweet','canteen'].forEach(s => {
-    counts[s] = recipes.filter(r => r.section === s).length;
-  });
-  return counts;
-}
-
-function updateCounts() {
-  const counts = getCounts();
-  Object.entries(counts).forEach(([s, c]) => {
-    const el = document.getElementById('count-' + s);
-    if (el) el.textContent = c;
-  });
-  document.getElementById('totalRecipes').textContent = recipes.length;
-  document.getElementById('aboutCount').textContent = recipes.length;
-}
-
-function showSection(section) {
-  currentSection = section;
-
-  // Update nav buttons
-  document.querySelectorAll('[data-section]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.section === section);
-  });
-
-  // Update area header
-  const s = SECTIONS[section] || SECTIONS.all;
-  document.getElementById('areaTitle').textContent = s.title;
-  document.getElementById('areaSubtitle').textContent = s.subtitle;
-
-  // Filter recipes
-  const filtered = section === 'all'
-    ? recipes
-    : recipes.filter(r => r.section === section);
-
-  document.getElementById('areaCount').textContent =
-    filtered.length + ' recipe' + (filtered.length !== 1 ? 's' : '');
-
-  renderCards(filtered);
-
-  // Scroll to recipe area on mobile
-  if (window.innerWidth < 768) {
-    document.getElementById('mainContent').scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-function renderCards(list) {
-  const grid = document.getElementById('recipeGrid');
-  if (!list.length) {
-    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🏕️</div><p>No rations in this section yet.<br>Check back after the next live.</p></div>`;
-    return;
-  }
-  grid.innerHTML = list.map(r => `
-    <div class="recipe-card" onclick="openModal(${r.id})">
-      <div class="card-category">
-        ${r.tag}
-        ${r.isNew ? '<span class="card-new-badge">NEW</span>' : ''}
-      </div>
-      <div class="card-title">${r.title}</div>
-      <div class="card-desc">${r.desc}</div>
-      <div class="card-footer">
-        <div class="card-meta">
-          <div><span>⏱</span>${r.time}</div>
-          <div><span>🍽</span>${r.serves}</div>
-        </div>
-        <div class="card-arrow">Cook this →</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderThisWeek() {
-  const newRecipes = recipes.filter(r => r.isNew);
-  const grid = document.getElementById('weekGrid');
-  if (!newRecipes.length) {
-    grid.innerHTML = '<p style="color:var(--muted);font-size:0.8rem;">New rations drop every week. Come back soon.</p>';
-    return;
-  }
-  grid.innerHTML = newRecipes.map((r, i) => `
-    <div class="recipe-card ${i === 0 ? 'week-featured' : ''}" onclick="openModal(${r.id})">
-      <div class="card-category">${r.tag}</div>
-      <div class="card-title">${r.title}</div>
-      <div class="card-desc">${r.desc}</div>
-      <div class="card-footer">
-        <div class="card-meta">
-          <div><span>⏱</span>${r.time}</div>
-          <div><span>🍽</span>${r.serves}</div>
-        </div>
-        <div class="card-arrow">Cook this →</div>
-      </div>
-      ${i === 0 ? '<div class="recipe-number">' + String(r.id).padStart(2,'0') + '</div>' : ''}
-    </div>
-  `).join('');
-}
-
-function openModal(id) {
-  const r = recipes.find(x => x.id === id);
-  if (!r) return;
-  document.getElementById('mCategory').textContent = r.tag + ' · ' + r.date;
-  document.getElementById('mTitle').textContent = r.title;
-  document.getElementById('mDesc').textContent = r.desc;
-  document.getElementById('mIngredients').innerHTML = r.ingredients.map(i => `<li>${i}</li>`).join('');
-  document.getElementById('mSteps').innerHTML = r.steps.map(s => `<li><div class="step-text">${s}</div></li>`).join('');
-  const notesEl = document.getElementById('mNotes');
-  if (r.notes) {
-    notesEl.style.display = 'block';
-    notesEl.innerHTML = `<span class="notes-label">🔥 Jade's Field Notes</span>${r.notes}`;
-  } else {
-    notesEl.style.display = 'none';
-  }
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function closeModalOnOverlay(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
-
-function scrollToRecipes() {
-  document.getElementById('thisWeek').scrollIntoView({ behavior: 'smooth' });
-}
-
-function toggleMobile() {
-  const menu = document.getElementById('fieldMenu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-// Init
-updateCounts();
-renderThisWeek();
-showSection('all');
-</script>
-</body>
-</html>
+          <span class="sidebar-count" 
